@@ -45,7 +45,7 @@ class LastPostsWidget extends CWidget
 }
 ~~~
 
-Include behavior in the main controller:
+Attach behavior to main controller:
 ~~~
 [php]
 class Controller extends CController
