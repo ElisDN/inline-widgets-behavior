@@ -70,7 +70,7 @@ For insert widgets in content you can use string of this format in your text:
 <startBlock><WidgetName>[|<attribute>=<value>[;<attribute>=<value>]]<endBlock>
 ~~~
 
-For rendering widgets in any View you must call Controller::decodeWidgets() method for model HTML content. 
+For rendering widgets in any View you must call `Controller::decodeWidgets()` method for model HTML content. 
 
 For example:
 ~~~
