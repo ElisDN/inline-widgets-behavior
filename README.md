@@ -94,5 +94,3 @@ $model->text = '
 ';
 echo $this->decodeWidgets($model->text);
 ~~~
-
-[More examples](http://www.elisdn.ru/blog/13/vstraivaem-vidjeti-v-tekst-stranici-v-yii)
