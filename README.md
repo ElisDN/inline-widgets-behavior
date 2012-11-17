@@ -20,14 +20,15 @@ return array(
     'params'=>array(
          // ...
         'runtimeWidgets'=>array(
-            'LastPosts',
             'Share',
+            'Comments',
+            'blog.wigets.LastPosts',
         }
     }
 }
 ~~~
 
-Create widgets:
+Create widgets with names like <Name>Widget:
 ~~~
 [php]
 class LastPostsWidget extends CWidget
