@@ -9,9 +9,9 @@
  *     'params'=>array(
  *          // ...
  *         'runtimeWidgets'=>array(
- *             'LastPosts',
  *             'Share',
  *             'Comments',
+ *             'blog.widgets.LastPosts',
  *         }
  *     }
  * }
@@ -50,7 +50,6 @@
  *     }
  * }
  * </code>
-
  *
  * For rendering widgets in View you must call Controller::decodeWidgets() method:
  * <code>
@@ -80,7 +79,7 @@ class DInlineWidgetsBehavior extends CBehavior
      */
     public $endBlock = '*]';
     /**
-     * @var string 'widgets.path' if needle use Yii::import()
+     * @var string 'widgets.path' if needle for using Yii::import()
      */
     public $location = '';
     /**
@@ -112,11 +111,12 @@ class DInlineWidgetsBehavior extends CBehavior
     protected function processWidgets($text)
     {
         if (preg_match('|\{' . $this->_widgetToken . ':.+?\}|is', $text)) {
-            foreach ($this->widgets as $widget) {
+            foreach ($this->widgets as $alias) {
+                $widget = array_pop(explode('.', $alias));
                 while (
                     preg_match('|\{' . $this->_widgetToken . ':' . $widget . '(\|([^}]*)?)?\}|is', $text, $p)
                 ) {
-                    $text = str_replace($p[0], $this->loadWidget($widget, isset($p[2]) ? $p[2] : ''), $text);
+                    $text = str_replace($p[0], $this->loadWidget($alias, isset($p[2]) ? $p[2] : ''), $text);
                 }
             }
             return $text;
@@ -186,12 +186,16 @@ class DInlineWidgetsBehavior extends CBehavior
         return $cache;
     }
 
-    protected function createWidget($name, $attributes)
+    protected function createWidget($alias, $attributes)
     {
-        $class = $name . 'Widget';
+        $alias = $alias . 'Widget';
 
-        if (!empty($this->location))
-            Yii::import($this->location . '.' . $class);
+        if (strpos($alias, '.') !== false)
+            Yii::import($alias);
+        elseif (!empty($this->location))
+            Yii::import($this->location . '.' . $alias);
+
+        $class = array_pop(explode('.', $alias));
 
         $widget = new $class;
         foreach ($attributes as $attribute=>$value){
