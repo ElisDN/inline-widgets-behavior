@@ -91,7 +91,7 @@ class DInlineWidgetsBehavior extends CBehavior
 
     public function __construct()
     {
-        $this->initToken();
+        $this->_initToken();
     }
 
     /**
@@ -102,13 +102,13 @@ class DInlineWidgetsBehavior extends CBehavior
      */
     public function decodeWidgets($text)
     {
-        $text = $this->replaceBlocks($text);
-        $text = $this->clearAutoParagraphs($text);
-        $text = $this->processWidgets($text);
+        $text = $this->_replaceBlocks($text);
+        $text = $this->_clearAutoParagraphs($text);
+        $text = $this->_processWidgets($text);
         return $text;
     }
 
-    protected function processWidgets($text)
+    protected function _processWidgets($text)
     {
         if (preg_match('|\{' . $this->_widgetToken . ':.+?\}|is', $text)) {
             foreach ($this->widgets as $alias) {
@@ -116,7 +116,7 @@ class DInlineWidgetsBehavior extends CBehavior
                 while (
                     preg_match('|\{' . $this->_widgetToken . ':' . $widget . '(\|([^}]*)?)?\}|is', $text, $p)
                 ) {
-                    $text = str_replace($p[0], $this->loadWidget($alias, isset($p[2]) ? $p[2] : ''), $text);
+                    $text = str_replace($p[0], $this->_loadWidget($alias, isset($p[2]) ? $p[2] : ''), $text);
                 }
             }
             return $text;
@@ -124,29 +124,29 @@ class DInlineWidgetsBehavior extends CBehavior
         return $text;
     }
 
-    protected function initToken()
+    protected function _initToken()
     {
         $this->_widgetToken = md5(microtime());
     }
 
-    protected function replaceBlocks($text)
+    protected function _replaceBlocks($text)
     {
         $text = str_replace($this->startBlock, '{' . $this->_widgetToken . ':', $text);
         $text = str_replace($this->endBlock, '}', $text);
         return $text;
     }
 
-    protected function clearAutoParagraphs($output)
+    protected function _clearAutoParagraphs($output)
     {
         $output = str_replace('<p>' . $this->startBlock, $this->startBlock, $output);
         $output = str_replace($this->endBlock . '</p>', $this->endBlock, $output);
         return $output;
     }
 
-    protected function loadWidget($name, $attributes='')
+    protected function _loadWidget($name, $attributes='')
     {
-        $attrs = $this->parseAttributes($attributes);
-        $cache = $this->extractCacheExpireTime($attrs);
+        $attrs = $this->_parseAttributes($attributes);
+        $cache = $this->_extractCacheExpireTime($attrs);
 
         $index = 'widget_' . $name . '_' . serialize($attrs);
         
@@ -154,7 +154,7 @@ class DInlineWidgetsBehavior extends CBehavior
              $html = $cachedHtml;
         } else {
             ob_start();
-            $widget = $this->createWidget($name, $attrs);
+            $widget = $this->_createWidget($name, $attrs);
             $widget->run();
             $html = trim(ob_get_clean());
             Yii::app()->cache->set($index, $html, $cache);
@@ -162,7 +162,7 @@ class DInlineWidgetsBehavior extends CBehavior
         return $html;
     }
 
-    protected function parseAttributes($attributesString)
+    protected function _parseAttributes($attributesString)
     {
         $params = explode(';', $attributesString);
         $attrs = array();
@@ -176,7 +176,7 @@ class DInlineWidgetsBehavior extends CBehavior
         return $attrs;
     }
 
-    protected function extractCacheExpireTime(&$attrs)
+    protected function _extractCacheExpireTime(&$attrs)
     {
         $cache = 0;
         if (isset($attrs['cache'])) {
@@ -186,7 +186,7 @@ class DInlineWidgetsBehavior extends CBehavior
         return $cache;
     }
 
-    protected function createWidget($alias, $attributes)
+    protected function _createWidget($alias, $attributes)
     {
         $alias = $alias . 'Widget';
 
