@@ -112,7 +112,8 @@ class DInlineWidgetsBehavior extends CBehavior
     {
         if (preg_match('|\{' . $this->_widgetToken . ':.+?\}|is', $text)) {
             foreach ($this->widgets as $alias) {
-                $widget = array_pop(explode('.', $alias));
+                $widget = $this->getClassByAlias($alias);
+
                 while (
                     preg_match('|\{' . $this->_widgetToken . ':' . $widget . '(\|([^}]*)?)?\}|is', $text, $p)
                 ) {
@@ -195,12 +196,18 @@ class DInlineWidgetsBehavior extends CBehavior
         elseif (!empty($this->location))
             Yii::import($this->location . '.' . $alias);
 
-        $class = array_pop(explode('.', $alias));
+        $class = $this->getClassByAlias($alias);
 
         $widget = new $class;
         foreach ($attributes as $attribute=>$value){
             $widget->$attribute = trim($value);
         }
         return $widget;
+    }
+
+    protected function getClassByAlias($alias)
+    {
+        $paths = explode('.', $alias);
+        return array_pop($paths);
     }
 }
