@@ -110,13 +110,14 @@ class DInlineWidgetsBehavior extends CBehavior
 
     protected function _processWidgets($text)
     {
-        if (preg_match('|\{' . $this->_widgetToken . ':.+?\}|is', $text)) {
-            foreach ($this->widgets as $alias) {
+        if (preg_match('|\{' . $this->_widgetToken . ':.+?\}|is', $text))
+        {
+            foreach ($this->widgets as $alias)
+            {
                 $widget = $this->getClassByAlias($alias);
 
-                while (
-                    preg_match('|\{' . $this->_widgetToken . ':' . $widget . '(\|([^}]*)?)?\}|is', $text, $p)
-                ) {
+                while (preg_match('|\{' . $this->_widgetToken . ':' . $widget . '(\|([^}]*)?)?\}|is', $text, $p))
+                {
                     $text = str_replace($p[0], $this->_loadWidget($alias, isset($p[2]) ? $p[2] : ''), $text);
                 }
             }
@@ -151,15 +152,19 @@ class DInlineWidgetsBehavior extends CBehavior
 
         $index = 'widget_' . $name . '_' . serialize($attrs);
         
-        if ($cache && $cachedHtml = Yii::app()->cache->get($index)){
+        if ($cache && $cachedHtml = Yii::app()->cache->get($index))
+        {
              $html = $cachedHtml;
-        } else {
+        }
+        else
+        {
             ob_start();
             $widget = $this->_createWidget($name, $attrs);
             $widget->run();
             $html = trim(ob_get_clean());
             Yii::app()->cache->set($index, $html, $cache);
         }
+
         return $html;
     }
 
@@ -167,12 +172,16 @@ class DInlineWidgetsBehavior extends CBehavior
     {
         $params = explode(';', $attributesString);
         $attrs = array();
-        foreach ($params as $param) {
-            if ($param) {
+
+        foreach ($params as $param)
+        {
+            if ($param)
+            {
                 list($attribute, $value) = explode('=', $param);
                 if ($value) $attrs[$attribute] = trim($value);
             }
         }
+
         ksort($attrs);
         return $attrs;
     }
@@ -180,7 +189,8 @@ class DInlineWidgetsBehavior extends CBehavior
     protected function _extractCacheExpireTime(&$attrs)
     {
         $cache = 0;
-        if (isset($attrs['cache'])) {
+        if (isset($attrs['cache']))
+        {
             $cache = (int)$attrs['cache'];
             unset($attrs['cache']);
         }
@@ -199,7 +209,8 @@ class DInlineWidgetsBehavior extends CBehavior
         $class = $this->getClassByAlias($alias);
 
         $widget = new $class;
-        foreach ($attributes as $attribute=>$value){
+        foreach ($attributes as $attribute=>$value)
+        {
             $widget->$attribute = trim($value);
         }
         return $widget;
