@@ -114,9 +114,9 @@ class DInlineWidgetsBehavior extends CBehavior
         {
             foreach ($this->widgets as $alias)
             {
-                $widget = $this->getClassByAlias($alias);
+                $widget = $this->_getClassByAlias($alias);
 
-                while (preg_match('|\{' . $this->_widgetToken . ':' . $widget . '(\|([^}]*)?)?\}|is', $text, $p))
+                while (preg_match('|\{' . $this->_widgetToken . ':' . $widget . '(\|([^}]*)?)?' . $this->_widgetToken . '\}|is', $text, $p))
                 {
                     $text = str_replace($p[0], $this->_loadWidget($alias, isset($p[2]) ? $p[2] : ''), $text);
                 }
@@ -134,7 +134,7 @@ class DInlineWidgetsBehavior extends CBehavior
     protected function _replaceBlocks($text)
     {
         $text = str_replace($this->startBlock, '{' . $this->_widgetToken . ':', $text);
-        $text = str_replace($this->endBlock, '}', $text);
+        $text = str_replace($this->endBlock, $this->_widgetToken . '}', $text);
         return $text;
     }
 
@@ -197,7 +197,7 @@ class DInlineWidgetsBehavior extends CBehavior
         return $cache;
     }
 
-    protected function getClassByAlias($alias)
+    protected function _getClassByAlias($alias)
     {
         $paths = explode('.', $alias);
         return array_pop($paths);
