@@ -159,7 +159,7 @@ class DInlineWidgetsBehavior extends CBehavior
         else
         {
             ob_start();
-            $widget = $this->_createWidget($name, $attrs);
+            $widget = Yii::app()->getWidgetFactory()->createWidget($this->owner, $name . 'Widget', $attrs);
             $widget->run();
             $html = trim(ob_get_clean());
             Yii::app()->cache->set($index, $html, $cache);
@@ -195,25 +195,6 @@ class DInlineWidgetsBehavior extends CBehavior
             unset($attrs['cache']);
         }
         return $cache;
-    }
-
-    protected function _createWidget($alias, $attributes)
-    {
-        $alias = $alias . 'Widget';
-
-        if (strpos($alias, '.') !== false)
-            Yii::import($alias);
-        elseif (!empty($this->location))
-            Yii::import($this->location . '.' . $alias);
-
-        $class = $this->getClassByAlias($alias);
-
-        $widget = new $class;
-        foreach ($attributes as $attribute=>$value)
-        {
-            $widget->$attribute = trim($value);
-        }
-        return $widget;
     }
 
     protected function getClassByAlias($alias)
