@@ -151,10 +151,10 @@ class DInlineWidgetsBehavior extends CBehavior
         $cache = $this->_extractCacheExpireTime($attrs);
 
         $index = 'widget_' . $name . '_' . serialize($attrs);
-        
+
         if ($cache && $cachedHtml = Yii::app()->cache->get($index))
         {
-             $html = $cachedHtml;
+            $html = $cachedHtml;
         }
         else
         {
