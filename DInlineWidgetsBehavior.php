@@ -79,9 +79,13 @@ class DInlineWidgetsBehavior extends CBehavior
      */
     public $endBlock = '*]';
     /**
-     * @var string 'widgets.path' if needle for using Yii::import()
+     * @var string alias if needle using default location 'path.to.widgets'
      */
     public $location = '';
+    /**
+     * @var string global classname suffix like 'Widget'
+     */
+    public $classSuffix = '';
     /**
      * @var array of allowed widgets
      */
@@ -159,7 +163,7 @@ class DInlineWidgetsBehavior extends CBehavior
         else
         {
             ob_start();
-            $widget = Yii::app()->getWidgetFactory()->createWidget($this->owner, $name . 'Widget', $attrs);
+            $widget = Yii::app()->getWidgetFactory()->createWidget($this->owner, $name . $this->classSuffix, $attrs);
             $widget->run();
             $html = trim(ob_get_clean());
             Yii::app()->cache->set($index, $html, $cache);
