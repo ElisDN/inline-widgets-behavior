@@ -20,15 +20,15 @@ return array(
     'params'=>array(
          // ...
         'runtimeWidgets'=>array(
-            'Share',
+            'ShareWidget',
             'Comments',
-            'blog.wigets.LastPosts',
+            'blog.wigets.LastPostsWidget',
         }
     }
 }
 ~~~
 
-Create widgets with names like <Name>Widget:
+Create widgets:
 ~~~
 [php]
 class LastPostsWidget extends CWidget
@@ -56,12 +56,46 @@ class Controller extends CController
         return array(
             'InlineWidgetsBehavior'=>array(
                 'class'=>'application.components.DInlineWidgetsBehavior',
-                'location'=>'application.components.widgets',                
+                'location'=>'application.components.widgets', // default path (optional)               
                 'widgets'=>Yii::app()->params['runtimeWidgets'],
                 'startBlock'=> '{{w:',
                 'endBlock'=> '}}',
              ),
         );
+    }
+}
+~~~
+
+You can define global classname suffix like 'Widget':
+~~~
+[php]
+class Controller extends CController
+{
+    public function behaviors()
+    {
+        return array(
+            'InlineWidgetsBehavior'=>array(
+                'class'=>'application.components.DInlineWidgetsBehavior',
+                'widgets'=>Yii::app()->params['runtimeWidgets'],
+                'classSuffix'=> 'Widget',
+             ),
+        );
+    }
+}
+~~~
+
+for using short names 'LastPosts' instead of 'LastPostsWidget' :
+~~~
+[php]
+return array(
+    // ...
+    'params'=>array(
+         // ...
+        'runtimeWidgets'=>array(
+            'Share',
+            'Comments',
+            'blog.wigets.LastPosts',
+        }
     }
 }
 ~~~
