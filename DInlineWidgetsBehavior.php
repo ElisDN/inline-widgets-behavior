@@ -114,7 +114,7 @@ class DInlineWidgetsBehavior extends CBehavior
 
     protected function _processWidgets($text)
     {
-        if (preg_match('|\{' . $this->_widgetToken . ':.+?\}|is', $text))
+        if (preg_match('|\{' . $this->_widgetToken . ':.+?' . $this->_widgetToken . '\}|is', $text))
         {
             foreach ($this->widgets as $alias)
             {
