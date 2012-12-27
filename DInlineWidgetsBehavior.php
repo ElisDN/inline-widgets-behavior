@@ -120,7 +120,7 @@ class DInlineWidgetsBehavior extends CBehavior
             {
                 $widget = $this->_getClassByAlias($alias);
 
-                while (preg_match('|\{' . $this->_widgetToken . ':' . $widget . '(\|([^}]*)?)?' . $this->_widgetToken . '\}|is', $text, $p))
+                while (preg_match('#\{' . $this->_widgetToken . ':' . $widget . '(\|([^}]*)?)?' . $this->_widgetToken . '\}#is', $text, $p))
                 {
                     $text = str_replace($p[0], $this->_loadWidget($alias, isset($p[2]) ? $p[2] : ''), $text);
                 }
