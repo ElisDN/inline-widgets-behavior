@@ -110,22 +110,21 @@ For rendering widgets in any View you must call `Controller::decodeWidgets()` me
 For example:
 ~~~
 [php]
-$model->text = '
+<?php $model->text = '
     <h2>Lorem ipsum</h2>
-    
+ 
     <h2>Latest posts</h2>
-    <p>{{w:LastPosts}}</p>
-    
-    <h2>Latest 4 posts</h2>
-    <p>{{w:LastPosts|limit=4}}</p>
-    
-    <h2>Latest posts (custom template)</h2>
-    <p>{{w:LastPosts|limit=5;tpl=small}}</p>
-    
-    <h2>Latest posts with caching</h2>    
-    <p>{{w:LastPosts|limit=5;tpl=small;cache=300}}</p>
-    
+    <p>{{w:LastPostsWidget}}</p>
+ 
+    <h2>Latest posts (with parameters)</h2>
+    <p>{{w:LastPostsWidget|limit=5}}</p>
+ 
+    <h2>Latest posts (with inner caching)</h2>    
+    <p>{{w:LastPostsWidget|limit=5;tpl=small;cache=300}}</p>
+ 
     <p>Dolor...</p>
-';
-echo $this->decodeWidgets($model->text);
+'; ?>
+ 
+<h1><?php echo CHtml::encode($model->title); ?></h1>
+<?php echo $this->decodeWidgets($model->text); ?>
 ~~~
