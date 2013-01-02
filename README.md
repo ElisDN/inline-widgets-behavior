@@ -123,7 +123,7 @@ $model->text = '
     <p>{{w:LastPosts|limit=5;tpl=small}}</p>
     
     <h2>Latest posts with caching</h2>    
-    <p>{{w:LastPosts|limit=5;tpl=small|cache=300}}</p>
+    <p>{{w:LastPosts|limit=5;tpl=small;cache=300}}</p>
     
     <p>Dolor...</p>
 ';
