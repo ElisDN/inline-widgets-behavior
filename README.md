@@ -2,8 +2,8 @@ InlineWidgetsBehavior
 ==========================
 Allows render widgets in page content in Yii Framework based projects
 
-[README RUS](http://www.elisdn.ru/blog/13/vstraivaem-vidjeti-v-tekst-stranici-v-yii)
-[Extension](http://www.yiiframework.com/extension/inline-widgets-behavior/)
+- [README RUS](http://www.elisdn.ru/blog/13/vstraivaem-vidjeti-v-tekst-stranici-v-yii)
+- [Extension](http://www.yiiframework.com/extension/inline-widgets-behavior/)
 
 Installation
 ------------
