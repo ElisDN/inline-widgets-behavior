@@ -166,6 +166,7 @@ class DInlineWidgetsBehavior extends CBehavior
             ob_start();
             $widgetClass = $this->_getFullClassName($name);
             $widget = Yii::app()->getWidgetFactory()->createWidget($this->owner, $widgetClass, $attrs);
+            $widget->init();
             $widget->run();
             $html = trim(ob_get_clean());
             Yii::app()->cache->set($index, $html, $cache);
