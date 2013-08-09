@@ -1,6 +1,6 @@
 InlineWidgetsBehavior
 ==========================
-Allows render widgets in page content in Yii Framework based projects
+Allows to render widgets in page content in Yii Framework based projects
 
 - [README RUS](http://www.elisdn.ru/blog/13/vstraivaem-vidjeti-v-tekst-stranici-v-yii)
 - [Extension](http://www.yiiframework.com/extension/inline-widgets-behavior/)
@@ -13,7 +13,7 @@ Extract to `protected/components`.
 Usage example
 -------------
 
-Add allowed widgets list to `config/main.php`:
+Add a allowed widgets list into `config/main.php`:
 ~~~
 [php]
 return array(
@@ -47,7 +47,7 @@ class LastPostsWidget extends CWidget
 }
 ~~~
 
-Attach behavior to main controller:
+Attach the behavior to a main controller:
 ~~~
 [php]
 class Controller extends CController
@@ -67,7 +67,7 @@ class Controller extends CController
 }
 ~~~
 
-You can define global classname suffix like 'Widget':
+You can define a global classname suffix like 'Widget':
 ~~~
 [php]
 class Controller extends CController
@@ -120,7 +120,7 @@ For example:
     <h2>Latest posts (with parameters)</h2>
     <p>{{w:LastPostsWidget|limit=5}}</p>
  
-    <h2>Latest posts (with inner caching)</h2>    
+    <h2>Latest posts (with inner caching)</h2>
     <p>{{w:LastPostsWidget|limit=5;tpl=small;cache=300}}</p>
  
     <p>Dolor...</p>
