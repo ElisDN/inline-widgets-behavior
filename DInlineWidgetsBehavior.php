@@ -66,7 +66,7 @@
  *
  * @author ElisDN <mail@elisdn.ru>
  * @link http://www.elisdn.ru
- * @version 1.1
+ * @version 1.2
  */
 
 class DInlineWidgetsBehavior extends CBehavior
