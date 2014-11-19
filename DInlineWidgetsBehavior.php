@@ -1,6 +1,6 @@
 <?php
 /**
- * DInlineWidgetsBehavior allows render widgets in page content
+ * InlineWidgetsBehavior allows render widgets in page content
  *
  * Config:
  * <code>
@@ -9,9 +9,9 @@
  *     'params'=>array(
  *          // ...
  *         'runtimeWidgets'=>array(
- *             'Share',
+ *             'ContactsForm',
  *             'Comments',
- *             'blog.widgets.LastPosts',
+ *             'common\widgets\LastPosts',
  *         }
  *     }
  * }
@@ -19,16 +19,15 @@
  *
  * Widget:
  * <code>
- * class LastPostsWidget extends CWidget
+ * class LastPostsWidget extends Widget
  * {
- *     public $tpl='default';
- *     public $limit=3;
- *
+ *     public $tpl = 'default';
+ *    
  *     public function run()
  *     {
- *         $posts = Post::model()->published()->last($this->limit)->findAll();
- *         $this->render('LastPosts/' . $this->tpl,array(
- *             'posts'=>$posts,
+ *         $posts = Post::find()->published()->all();
+ *         echo $this->render('LastPosts/' . $this->tpl, array(
+ *             'posts' => $posts,
  *         ));
  *     }
  * }
@@ -36,15 +35,16 @@
  *
  * Controller:
  * <code>
- * class Controller extends CController
+ * use howard\behaviors\iwb\InlineWidgetBehavior;
+ * class Controller extends Controller
  * {
  *     public function behaviors()
  *     {
  *         return array(
  *             'InlineWidgetsBehavior'=>array(
- *                 'class'=>'DInlineWidgetsBehavior',
- *                 'location'=>'application.components.widgets',
- *                 'widgets'=>Yii::app()->params['runtimeWidgets'],
+ *                 'class' => InlineWidgetBehavior::className(),
+ *                 'namespace' => 'common\components\widgets',
+ *                 'widgets' => Yii::app()->params['runtimeWidgets'],
  *              ),
  *         );
  *     }
@@ -55,21 +55,23 @@
  * <code>
  * $text = '
  *     <h2>Lorem ipsum</h2>
- *     <p>[*LastPosts*]</p>
- *     <p>[*LastPosts|limit=4*]</p>
- *     <p>[*LastPosts|limit=5;tpl=small*]</p>
- *     <p>[*LastPosts|limit=5;tpl=small|cache=300*]</p>
+ *     <p>[*LastPosts*]</p> *
+ *     <p>[*LastPosts|tpl=small*]</p>
+ *     <p>[*LastPosts|tpl=small|cache=300*]</p>
  *     <p>Dolor...</p>
  * ';
- * echo $this->decodeWidgets($text);
+ * echo $this->context->decodeWidgets($text);
  * </code>
  *
- * @author ElisDN <mail@elisdn.ru>
+ * @authors: ElisDN <mail@elisdn.ru>, HowarD <vovchuck.bogdan@gmail.com>
  * @link http://www.elisdn.ru
- * @version 1.2
+ * @version 1.0
  */
 
-class DInlineWidgetsBehavior extends CBehavior
+namespace howard\behaviors\iwb;
+use yii\base\Behavior;
+
+class InlineWidgetBehavior extends Behavior
 {
     /**
      * @var string marker of block begin
@@ -80,9 +82,9 @@ class DInlineWidgetsBehavior extends CBehavior
      */
     public $endBlock = '*]';
     /**
-     * @var string alias if needle using default location 'path.to.widgets'
+     * @var namespace of widgets like 'common\components\widgets'
      */
-    public $location = '';
+    public $namespace = '';
     /**
      * @var string global classname suffix like 'Widget'
      */
@@ -101,42 +103,41 @@ class DInlineWidgetsBehavior extends CBehavior
 
     /**
      * Content parser
-     * Use $this->decodeWidgets($model->text) in view
+     * Use $this->view->decodeWidgets($model->text) in view
      * @param $text
      * @return mixed
      */
     public function decodeWidgets($text)
     {
-		$text = $this->_clearAutoParagraphs($text);
-		$text = $this->_replaceBlocks($text);
+        $text = $this->_clearAutoParagraphs($text);
+        $text = $this->_replaceBlocks($text);
         $text = $this->_processWidgets($text);
         return $text;
     }
 
     /**
      * Content cleaner
-     * Use $this->clearWidgets($model->text) in view
+     * Use $this->view->clearWidgets($model->text) in view
      * @param $text
      * @return mixed
      */
     public function clearWidgets($text)
     {
-		$text = $this->_clearAutoParagraphs($text);
-		$text = $this->_replaceBlocks($text);
+        $text = $this->_clearAutoParagraphs($text);
+        $text = $this->_replaceBlocks($text);
         $text = $this->_clearWidgets($text);
         return $text;
     }
-
+    
+    /**
+     * Renders widgets
+     */		
     protected function _processWidgets($text)
     {
-        if (preg_match('|\{' . $this->_widgetToken . ':.+?' . $this->_widgetToken . '\}|is', $text))
-        {
-            foreach ($this->widgets as $alias)
-            {
+        if (preg_match('|\{' . $this->_widgetToken . ':.+?' . $this->_widgetToken . '\}|is', $text)) {
+            foreach ($this->widgets as $alias) {
                 $widget = $this->_getClassByAlias($alias);
-
-                while (preg_match('#\{' . $this->_widgetToken . ':' . $widget . '(\|([^}]*)?)?' . $this->_widgetToken . '\}#is', $text, $p))
-                {
+                while (preg_match('/\{' . $this->_widgetToken . ':' . $widget . '(\|([^}]*)?)?' . $this->_widgetToken . '\}/is', $text, $p)) {
                     $text = str_replace($p[0], $this->_loadWidget($alias, isset($p[2]) ? $p[2] : ''), $text);
                 }
             }
@@ -169,28 +170,22 @@ class DInlineWidgetsBehavior extends CBehavior
         return $output;
     }
 
-    protected function _loadWidget($name, $attributes='')
+    protected function _loadWidget($name, $attributes = '')
     {
         $attrs = $this->_parseAttributes($attributes);
         $cache = $this->_extractCacheExpireTime($attrs);
-
         $index = 'widget_' . $name . '_' . serialize($attrs);
-
-        if ($cache && $cachedHtml = Yii::app()->cache->get($index))
-        {
+        if ($cache && $cachedHtml = \Yii::$app->cache->get($index)) {
             $html = $cachedHtml;
-        }
-        else
-        {
+        } else {
             ob_start();
             $widgetClass = $this->_getFullClassName($name);
-            $widget = Yii::app()->getWidgetFactory()->createWidget($this->owner, $widgetClass, $attrs);
-            $widget->init();
+            $config['class'] = $widgetClass;
+            $widget = \Yii::createObject($config);
             $widget->run();
             $html = trim(ob_get_clean());
-            Yii::app()->cache->set($index, $html, $cache);
+            \Yii::$app->cache->set($index, $html, $cache);
         }
-
         return $html;
     }
 
@@ -198,16 +193,12 @@ class DInlineWidgetsBehavior extends CBehavior
     {
         $params = explode(';', $attributesString);
         $attrs = array();
-
-        foreach ($params as $param)
-        {
-            if ($param)
-            {
+        foreach ($params as $param) {
+            if ($param) {
                 list($attribute, $value) = explode('=', $param);
                 if ($value) $attrs[$attribute] = trim($value);
             }
         }
-
         ksort($attrs);
         return $attrs;
     }
@@ -215,8 +206,7 @@ class DInlineWidgetsBehavior extends CBehavior
     protected function _extractCacheExpireTime(&$attrs)
     {
         $cache = 0;
-        if (isset($attrs['cache']))
-        {
+        if (isset($attrs['cache'])) {
             $cache = (int)$attrs['cache'];
             unset($attrs['cache']);
         }
@@ -226,14 +216,14 @@ class DInlineWidgetsBehavior extends CBehavior
     protected function _getFullClassName($name)
     {
         $widgetClass = $name . $this->classSuffix;
-        if ($this->_getClassByAlias($widgetClass) == $widgetClass && $this->location)
-            $widgetClass = $this->location . '.' . $widgetClass;
+        if ($this->_getClassByAlias($widgetClass) == $widgetClass && $this->namespace)
+            $widgetClass = $this->namespace . '\\' . $widgetClass;
         return $widgetClass;
     }
 
     protected function _getClassByAlias($alias)
     {
-        $paths = explode('.', $alias);
+        $paths = explode('\\', $alias);
         return array_pop($paths);
     }
-}
+} 
