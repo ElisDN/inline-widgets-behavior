@@ -20,9 +20,9 @@ to the `require` section of your `composer.json file`.
 Usage example
 -------------
 
-Add a allowed widgets list into `config/main.php`:
-~~~
-[php]
+### Add a allowed widgets list into `config/main.php`:
+
+```php
 return array(
     // ...
     'params'=>array(
@@ -34,12 +34,11 @@ return array(
         }
     }
 }
-[/php]
-~~~
+```
 
-Create widgets:
-~~~
-[php]
+### Create widgets:
+
+```php
 class LastPostsWidget extends Widget
 {
     public $tpl = 'default';
@@ -52,12 +51,12 @@ class LastPostsWidget extends Widget
         ));
     }
 }
-[/php]
-~~~
+```
 
-Attach the behavior to a main controller:
-~~~
-[php]
+
+### Attach the behavior to a main controller:
+
+```php
 use howard\behaviors\iwb\InlineWidgetBehavior;
 
 class DefaultController extends Controller
@@ -75,12 +74,12 @@ class DefaultController extends Controller
         );
     }
 }
-[/php]
-~~~
+```
 
-You can define a global classname suffix like 'Widget':
-~~~
-[php]
+
+### You can define a global classname suffix like 'Widget':
+
+```php
 class DefaultController extends Controller
 {
     public function behaviors()
@@ -94,12 +93,11 @@ class DefaultController extends Controller
         );
     }
 }
-[/php]
-~~~
+```
 
 for using short names 'LastPosts' instead of 'LastPostsWidget' :
-~~~
-[php]
+
+```php
 return array(
     // ...
     'params'=>array(
@@ -111,8 +109,8 @@ return array(
         }
     }
 }
-[/php]
-~~~
+```
+
 
 For insert widgets in content you can use string of this format in your text:
 ~~~
@@ -121,9 +119,9 @@ For insert widgets in content you can use string of this format in your text:
 
 For rendering widgets in any View you must call `Controller::decodeWidgets()` method for model HTML content. 
 
-For example:
-~~~
-[php]
+### For example:
+
+```php
 <?php $model->text = '
     <h2>Lorem ipsum</h2>
  
@@ -141,5 +139,4 @@ For example:
  
 <h1><?php echo CHtml::encode($model->title); ?></h1>
 <?php echo $this->context->decodeWidgets($model->text); ?>
-[/php]
-~~~
+```
