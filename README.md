@@ -1,14 +1,21 @@
 InlineWidgetsBehavior
 ==========================
-Allows to render widgets in page content in Yii Framework based projects
+Allows to render widgets in page content in Yii2 Framework based projects
 
-- [README RUS](http://www.elisdn.ru/blog/13/vstraivaem-vidjeti-v-tekst-stranici-v-yii)
-- [Extension](http://www.yiiframework.com/extension/inline-widgets-behavior/)
+- [Extension](soon)
 
-Installation
+Install
 ------------
 
-Extract to `protected/components`.
+Either run
+~~~
+$ php composer.phar require howardEagle/Yii2-inline-widgets-behavior "*"
+~~~
+or add
+~~~~
+"howardEagle/Yii2-inline-widgets-behavior": "*"
+~~~
+to the `require` section of your `composer.json file`.
 
 Usage example
 -------------
@@ -21,9 +28,9 @@ return array(
     'params'=>array(
          // ...
         'runtimeWidgets'=>array(
-            'ShareWidget',
+            'ContactsForm',
             'Comments',
-            'blog.wigets.LastPostsWidget',
+            'common\widgets\LastPosts',
         }
     }
 }
@@ -32,15 +39,14 @@ return array(
 Create widgets:
 ~~~
 [php]
-class LastPostsWidget extends CWidget
+class LastPostsWidget extends Widget
 {
-    public $tpl='default';
-    public $limit=3;
+    public $tpl = 'default';
 
     public function run()
     {
-        $posts = Post::model()->published()->last($this->limit)->findAll();
-        $this->render('LastPosts/' . $this->tpl, array(
+        $posts = Post::find()->published()->all();
+        echo $this->render('LastPosts/' . $this->tpl, array(
             'posts'=>$posts,
         ));
     }
@@ -50,17 +56,19 @@ class LastPostsWidget extends CWidget
 Attach the behavior to a main controller:
 ~~~
 [php]
-class Controller extends CController
+use howard\behaviors\iwb\InlineWidgetBehavior;
+
+class DefaultController extends Controller
 {
     public function behaviors()
     {
         return array(
             'InlineWidgetsBehavior'=>array(
-                'class'=>'application.components.DInlineWidgetsBehavior',
-                'location'=>'application.components.widgets', // default path (optional)               
+                'class'=> InlineWidgetBehavior::className(),
+                'namespace'=> 'common\components\widgets', // default namespace (optional)               
                 'widgets'=>Yii::app()->params['runtimeWidgets'],
-                'startBlock'=> '{{w:',
-                'endBlock'=> '}}',
+                'startBlock'=> '[*',
+                'endBlock'=> '*]',
              ),
         );
     }
@@ -70,13 +78,13 @@ class Controller extends CController
 You can define a global classname suffix like 'Widget':
 ~~~
 [php]
-class Controller extends CController
+class DefaultController extends Controller
 {
     public function behaviors()
     {
         return array(
             'InlineWidgetsBehavior'=>array(
-                'class'=>'application.components.DInlineWidgetsBehavior',
+                'class'=> InlineWidgetBehavior::className(),
                 'widgets'=>Yii::app()->params['runtimeWidgets'],
                 'classSuffix'=> 'Widget',
              ),
@@ -93,9 +101,9 @@ return array(
     'params'=>array(
          // ...
         'runtimeWidgets'=>array(
-            'Share',
+            'ContactsForm',
             'Comments',
-            'blog.wigets.LastPosts',
+            'common\widgets\LastPosts',
         }
     }
 }
@@ -115,17 +123,17 @@ For example:
     <h2>Lorem ipsum</h2>
  
     <h2>Latest posts</h2>
-    <p>{{w:LastPostsWidget}}</p>
+    <p>{{w:LastPosts}}</p>
  
     <h2>Latest posts (with parameters)</h2>
-    <p>{{w:LastPostsWidget|limit=5}}</p>
+    <p>{{w:LastPosts|tpl=small}}</p>
  
     <h2>Latest posts (with inner caching)</h2>
-    <p>{{w:LastPostsWidget|limit=5;tpl=small;cache=300}}</p>
+    <p>{{w:LastPosts|tpl=small;cache=300}}</p>
  
     <p>Dolor...</p>
 '; ?>
  
 <h1><?php echo CHtml::encode($model->title); ?></h1>
-<?php echo $this->decodeWidgets($model->text); ?>
+<?php echo $this->context->decodeWidgets($model->text); ?>
 ~~~
