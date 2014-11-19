@@ -22,7 +22,7 @@ Usage example
 
 Add a allowed widgets list into `config/main.php`:
 ~~~
-[code]
+[php]
 return array(
     // ...
     'params'=>array(
@@ -34,7 +34,7 @@ return array(
         }
     }
 }
-[/code]
+[/php]
 ~~~
 
 Create widgets:
