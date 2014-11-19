@@ -51,6 +51,7 @@ class LastPostsWidget extends Widget
         ));
     }
 }
+[/php]
 ~~~
 
 Attach the behavior to a main controller:
@@ -73,6 +74,7 @@ class DefaultController extends Controller
         );
     }
 }
+[/php]
 ~~~
 
 You can define a global classname suffix like 'Widget':
@@ -91,6 +93,7 @@ class DefaultController extends Controller
         );
     }
 }
+[/php]
 ~~~
 
 for using short names 'LastPosts' instead of 'LastPostsWidget' :
@@ -107,6 +110,7 @@ return array(
         }
     }
 }
+[/php]
 ~~~
 
 For insert widgets in content you can use string of this format in your text:
@@ -136,4 +140,5 @@ For example:
  
 <h1><?php echo CHtml::encode($model->title); ?></h1>
 <?php echo $this->context->decodeWidgets($model->text); ?>
+[/php]
 ~~~
