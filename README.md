@@ -126,13 +126,13 @@ For rendering widgets in any View you must call `Controller::decodeWidgets()` me
     <h2>Lorem ipsum</h2>
  
     <h2>Latest posts</h2>
-    <p>{{w:LastPosts}}</p>
+    <p>[*LastPosts*]</p>
  
     <h2>Latest posts (with parameters)</h2>
-    <p>{{w:LastPosts|tpl=small}}</p>
+    <p>[*LastPosts|tpl=small*]</p>
  
     <h2>Latest posts (with inner caching)</h2>
-    <p>{{w:LastPosts|tpl=small;cache=300}}</p>
+    <p>[*LastPosts|tpl=small;cache=300*]</p>
  
     <p>Dolor...</p>
 '; ?>
