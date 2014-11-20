@@ -1,5 +1,5 @@
 {
-    "name": "howardEagle/yii2-inline-widgets-behavior",
+    "name": "howardeagle/yii2-inline-widgets-behavior",
     "type": "yii2-extension",
     "description": "Allows to render widgets in page content in Yii2 Framework based projects",
     "keywords": ["yii2", "behaviors", "inline", "widget"],
