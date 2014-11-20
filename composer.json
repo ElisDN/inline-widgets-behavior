@@ -19,6 +19,7 @@
             "email": "mail@elisdn.ru"
         }
     ],
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "howard\\behaviors\\iwb\\": ""
