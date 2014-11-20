@@ -3,7 +3,6 @@
  * InlineWidgetsBehavior allows render widgets in page content
  *
  * Config:
- * <code>
  * return array(
  *     // ...
  *     'params'=>array(
@@ -15,10 +14,8 @@
  *         }
  *     }
  * }
- * </code>
  *
  * Widget:
- * <code>
  * class LastPostsWidget extends Widget
  * {
  *     public $tpl = 'default';
@@ -31,10 +28,8 @@
  *         ));
  *     }
  * }
- * </code>
  *
  * Controller:
- * <code>
  * use howard\behaviors\iwb\InlineWidgetBehavior;
  * class Controller extends Controller
  * {
@@ -49,10 +44,8 @@
  *         );
  *     }
  * }
- * </code>
  *
  * For rendering widgets in View you must call Controller::decodeWidgets() method:
- * <code>
  * $text = '
  *     <h2>Lorem ipsum</h2>
  *     <p>[*LastPosts*]</p> *
@@ -61,7 +54,6 @@
  *     <p>Dolor...</p>
  * ';
  * echo $this->context->decodeWidgets($text);
- * </code>
  *
  * @authors: ElisDN <mail@elisdn.ru>, HowarD <vovchuck.bogdan@gmail.com>
  * @link http://www.elisdn.ru
