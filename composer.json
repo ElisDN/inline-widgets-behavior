@@ -1,17 +1,13 @@
 {
     "name": "howardEagle/yii2-inline-widgets-behavior",
-    
     "type": "yii2-extension",
-
     "description": "Allows to render widgets in page content in Yii2 Framework based projects",
     "keywords": ["yii2", "behaviors", "inline", "widget"],
     "license": "BSD-3-Clause",
     "support": {
-        "issues": "https://github.com/howardEagle/Yii2-inline-widgets-behavior/issues",
+        "issues": "https://github.com/howardEagle/yii2-inline-widgets-behavior/issues",
         "forum": "http://www.yiiframework.com/forum/",
-        "wiki": "http://www.yiiframework.com/wiki/",
-        "irc": "irc://irc.freenode.net/yii",
-        "source": "https://github.com/yiisoft/yii2"
+        "source": "https://github.com/howardEagle/yii2-inline-widgets-behavior"
     },
     "authors": [
         {
