@@ -31,7 +31,7 @@
  *
  * Controller:
  * use howard\behaviors\iwb\InlineWidgetBehavior;
- * class Controller extends Controller
+ * class DefaultController extends Controller
  * {
  *     public function behaviors()
  *     {
