@@ -9,7 +9,7 @@ Install
 
 Either run
 ~~~
-$ php composer.phar require howardEagle/Yii2-inline-widgets-behavior "*"
+$ php composer.phar require --prefer-dist howardEagle/Yii2-inline-widgets-behavior "*"
 ~~~
 or add
 ~~~~
