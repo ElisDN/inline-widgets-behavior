@@ -30,14 +30,14 @@
  * }
  *
  * Controller:
- * use howard\behaviors\iwb\InlineWidgetBehavior;
+ * use howard\behaviors\iwb\InlineWidgetsBehavior;
  * class DefaultController extends Controller
  * {
  *     public function behaviors()
  *     {
  *         return array(
  *             'InlineWidgetsBehavior'=>array(
- *                 'class' => InlineWidgetBehavior::className(),
+ *                 'class' => InlineWidgetsBehavior::className(),
  *                 'namespace' => 'common\components\widgets',
  *                 'widgets' => Yii::app()->params['runtimeWidgets'],
  *              ),
@@ -63,7 +63,7 @@
 namespace howard\behaviors\iwb;
 use yii\base\Behavior;
 
-class InlineWidgetBehavior extends Behavior
+class InlineWidgetsBehavior extends Behavior
 {
     /**
      * @var string marker of block begin
