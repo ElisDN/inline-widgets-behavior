@@ -23,17 +23,17 @@ Usage example
 ### Add a allowed widgets list into `config/main.php`:
 
 ```php
-return array(
+return [
     // ...
-    'params'=>array(
+    'params' => [
          // ...
-        'runtimeWidgets'=>array(
+        'runtimeWidgets'=> [
             'ContactsForm',
             'Comments',
             'common\widgets\LastPosts',
-        }
-    }
-}
+        ]
+    ]
+]
 ```
 
 ### Create widgets:
@@ -46,9 +46,9 @@ class LastPostsWidget extends Widget
     public function run()
     {
         $posts = Post::find()->published()->all();
-        return $this->render('LastPosts/' . $this->tpl, array(
+        return $this->render('LastPosts/' . $this->tpl, [
             'posts'=>$posts,
-        ));
+        ]);
     }
 }
 ```
@@ -63,15 +63,15 @@ class DefaultController extends Controller
 {
     public function behaviors()
     {
-        return array(
-            'InlineWidgetsBehavior'=>array(
+        return [
+            'InlineWidgetsBehavior' => [
                 'class'=> InlineWidgetBehavior::className(),
                 'namespace'=> 'common\components\widgets', // default namespace (optional)               
                 'widgets'=>Yii::app()->params['runtimeWidgets'],
                 'startBlock'=> '[*',
                 'endBlock'=> '*]',
-             ),
-        );
+             ],
+        ];
     }
 }
 ```
@@ -84,13 +84,13 @@ class DefaultController extends Controller
 {
     public function behaviors()
     {
-        return array(
-            'InlineWidgetsBehavior'=>array(
+        return [
+            'InlineWidgetsBehavior' => [
                 'class'=> InlineWidgetBehavior::className(),
                 'widgets'=>Yii::app()->params['runtimeWidgets'],
                 'classSuffix'=> 'Widget',
-             ),
-        );
+             ],
+        ];
     }
 }
 ```
@@ -98,16 +98,16 @@ class DefaultController extends Controller
 for using short names 'LastPosts' instead of 'LastPostsWidget' :
 
 ```php
-return array(
+return [
     // ...
-    'params'=>array(
+    'params' => [
          // ...
-        'runtimeWidgets'=>array(
+        'runtimeWidgets' => [
             'ContactsForm',
             'Comments',
             'common\widgets\LastPosts',
-        }
-    }
+        ]
+    ]
 }
 ```
 
