@@ -46,7 +46,7 @@ class LastPostsWidget extends Widget
     public function run()
     {
         $posts = Post::find()->published()->all();
-        echo $this->render('LastPosts/' . $this->tpl, array(
+        return $this->render('LastPosts/' . $this->tpl, array(
             'posts'=>$posts,
         ));
     }
