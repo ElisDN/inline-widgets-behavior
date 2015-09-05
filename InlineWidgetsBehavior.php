@@ -23,7 +23,7 @@
  *     public function run()
  *     {
  *         $posts = Post::find()->published()->all();
- *         echo $this->render('LastPosts/' . $this->tpl, array(
+ *         return $this->render('LastPosts/' . $this->tpl, array(
  *             'posts' => $posts,
  *         ));
  *     }
@@ -174,7 +174,7 @@ class InlineWidgetsBehavior extends Behavior
             $widgetClass = $this->_getFullClassName($name);
             $config['class'] = $widgetClass;
             $widget = \Yii::createObject($config);
-            $widget->run();
+            echo $widget->run();
             $html = trim(ob_get_clean());
             \Yii::$app->cache->set($index, $html, $cache);
         }
