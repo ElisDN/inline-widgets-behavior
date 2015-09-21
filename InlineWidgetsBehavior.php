@@ -172,6 +172,7 @@ class InlineWidgetsBehavior extends Behavior
         } else {
             ob_start();
             $widgetClass = $this->_getFullClassName($name);
+            $config=$attrs;
             $config['class'] = $widgetClass;
             $widget = \Yii::createObject($config);
             echo $widget->run();
