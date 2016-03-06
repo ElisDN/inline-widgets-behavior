@@ -137,6 +137,6 @@ For rendering widgets in any View you must call `Controller::decodeWidgets()` me
     <p>Dolor...</p>
 '; ?>
  
-<h1><?php echo CHtml::encode($model->title); ?></h1>
-<?php echo $this->context->decodeWidgets($model->text); ?>
+<h1><?= Html::encode($model->title); ?></h1>
+<?= $this->context->decodeWidgets($model->text); ?>
 ```
