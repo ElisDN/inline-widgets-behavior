@@ -28,8 +28,6 @@ return [
     'params' => [
          // ...
         'runtimeWidgets'=> [
-            'ContactsForm',
-            'Comments',
             'common\widgets\LastPosts',
         ]
     ]
@@ -47,7 +45,7 @@ class LastPostsWidget extends Widget
     {
         $posts = Post::find()->published()->all();
         return $this->render('LastPosts/' . $this->tpl, [
-            'posts'=>$posts,
+            'posts' => $posts,
         ]);
     }
 }
@@ -67,7 +65,7 @@ class DefaultController extends Controller
             'InlineWidgetsBehavior' => [
                 'class'=> InlineWidgetBehavior::className(),
                 'namespace'=> 'common\components\widgets', // default namespace (optional)               
-                'widgets'=>Yii::app()->params['runtimeWidgets'],
+                'widgets'=> \Yii::$app->params['runtimeWidgets'],
                 'startBlock'=> '[*',
                 'endBlock'=> '*]',
              ],
@@ -86,9 +84,9 @@ class DefaultController extends Controller
     {
         return [
             'InlineWidgetsBehavior' => [
-                'class'=> InlineWidgetBehavior::className(),
-                'widgets'=>Yii::app()->params['runtimeWidgets'],
-                'classSuffix'=> 'Widget',
+                'class' => InlineWidgetBehavior::className(),
+                'widgets' => \Yii::$app->params['runtimeWidgets'],
+                'classSuffix' => 'Widget',
              ],
         ];
     }
