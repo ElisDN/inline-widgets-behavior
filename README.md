@@ -55,7 +55,7 @@ class LastPostsWidget extends Widget
 ### Attach the behavior to a main controller:
 
 ```php
-use howard\behaviors\iwb\InlineWidgetBehavior;
+use howard\behaviors\iwb\InlineWidgetsBehavior;
 
 class DefaultController extends Controller
 {
@@ -63,7 +63,7 @@ class DefaultController extends Controller
     {
         return [
             'InlineWidgetsBehavior' => [
-                'class'=> InlineWidgetBehavior::className(),
+                'class'=> InlineWidgetsBehavior::className(),
                 'namespace'=> 'common\components\widgets', // default namespace (optional)               
                 'widgets'=> \Yii::$app->params['runtimeWidgets'],
                 'startBlock'=> '[*',
@@ -84,7 +84,7 @@ class DefaultController extends Controller
     {
         return [
             'InlineWidgetsBehavior' => [
-                'class' => InlineWidgetBehavior::className(),
+                'class' => InlineWidgetsBehavior::className(),
                 'widgets' => \Yii::$app->params['runtimeWidgets'],
                 'classSuffix' => 'Widget',
              ],
