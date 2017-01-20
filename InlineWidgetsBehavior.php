@@ -55,12 +55,23 @@
  * ';
  * echo $this->context->decodeWidgets($text);
  *
- * @authors: ElisDN <mail@elisdn.ru>, HowarD <vovchuck.bogdan@gmail.com>
+ * To have an access to your model from widget you should specify $model param in Controller::decodeWidgets() method:
+ * $text = '
+ *     <h2>Lorem ipsum</h2>
+ *     <p>[*LastPosts*]</p> *
+ *     <p>[*LastPosts|tpl=small*]</p>
+ *     <p>[*LastPosts|tpl=small|cache=300*]</p>
+ *     <p>Dolor...</p>
+ * ';
+ * echo $this->context->decodeWidgets($text, $model);
+ *
+ * @authors: ElisDN <mail@elisdn.ru>, HowarD <vovchuck.bogdan@gmail.com>, demogorgorn <demogorgorn@gmail.com>
  * @link http://www.elisdn.ru
  * @version 1.0
  */
 
 namespace howard\behaviors\iwb;
+
 use yii\base\Behavior;
 
 class InlineWidgetsBehavior extends Behavior
@@ -88,6 +99,8 @@ class InlineWidgetsBehavior extends Behavior
 
     protected $_widgetToken;
 
+    public $model = null;
+
     public function __construct()
     {
         $this->_initToken();
@@ -99,8 +112,10 @@ class InlineWidgetsBehavior extends Behavior
      * @param $text
      * @return mixed
      */
-    public function decodeWidgets($text)
+    public function decodeWidgets($text, $model = null)
     {
+        $this->model = $model;
+
         $text = $this->_clearAutoParagraphs($text);
         $text = $this->_replaceBlocks($text);
         $text = $this->_processWidgets($text);
@@ -175,6 +190,8 @@ class InlineWidgetsBehavior extends Behavior
             $config = $attrs;
             $config['class'] = $widgetClass;
             $widget = \Yii::createObject($config);
+            if ($this->model !== null)
+                $widget->model = $this->model;
             echo $widget->run();
             $html = trim(ob_get_clean());
             \Yii::$app->cache->set($index, $html, $cache);
