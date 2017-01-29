@@ -190,7 +190,7 @@ class InlineWidgetsBehavior extends Behavior
             $config = $attrs;
             $config['class'] = $widgetClass;
             $widget = \Yii::createObject($config);
-            if ($this->model !== null)
+            if ($this->model !== null && property_exists($widget, 'model'))
                 $widget->model = $this->model;
             echo $widget->run();
             $html = trim(ob_get_clean());
