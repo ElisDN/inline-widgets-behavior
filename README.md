@@ -138,3 +138,9 @@ For rendering widgets in any View you must call `Controller::decodeWidgets()` me
 <h1><?= Html::encode($model->title); ?></h1>
 <?= $this->context->decodeWidgets($model->text); ?>
 ```
+
+to have an access to the model from widgets just specify the 'model' variable in `Controller::decodeWidgets()` method:
+
+```php
+<?= $this->context->decodeWidgets($model->text, $model); ?>
+```
