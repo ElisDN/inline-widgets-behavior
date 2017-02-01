@@ -85,7 +85,7 @@ class InlineWidgetsBehavior extends Behavior
      */
     public $endBlock = '*]';
     /**
-     * @var namespace of widgets like 'common\components\widgets'
+     * @var string namespace of widgets like 'common\components\widgets'
      */
     public $namespace = '';
     /**
@@ -187,7 +187,7 @@ class InlineWidgetsBehavior extends Behavior
         } else {
             ob_start();
             $widgetClass = $this->_getFullClassName($name);
-            $config = $attrs;
+            $config = $this->_validateWidgetProperties($widgetClass, $attrs);
             $config['class'] = $widgetClass;
             $widget = \Yii::createObject($config);
             if ($this->model !== null && property_exists($widget, 'model'))
@@ -210,6 +210,16 @@ class InlineWidgetsBehavior extends Behavior
             }
         }
         ksort($attrs);
+        return $attrs;
+    }
+
+    protected function _validateWidgetProperties($widgetClass, $attrs = [])
+    {
+        foreach ($attrs as $property => $value) {
+            if (!property_exists($widgetClass, $property))
+                unset($attrs[$property]);
+        }
+
         return $attrs;
     }
 
