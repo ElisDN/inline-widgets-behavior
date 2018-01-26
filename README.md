@@ -9,11 +9,11 @@ Install
 
 Either run
 ~~~
-$ php composer.phar require --prefer-dist howardEagle/Yii2-inline-widgets-behavior "*"
+$ php composer.phar require --prefer-dist outOFFspace/Yii2-inline-widgets-behavior "*"
 ~~~
 or add
 ~~~~
-"howardEagle/Yii2-inline-widgets-behavior": "*"
+"outOFFspace/Yii2-inline-widgets-behavior": "*"
 ~~~
 to the `require` section of your `composer.json file`.
 
