@@ -3,17 +3,17 @@
  * InlineWidgetsBehavior allows render widgets in page content
  *
  * Config:
- * return array(
+ * return [
  *     // ...
- *     'params'=>array(
+ *     'params' => [
  *          // ...
- *         'runtimeWidgets'=>array(
+ *         'runtimeWidgets' => [
  *             'ContactsForm',
  *             'Comments',
- *             'common\widgets\LastPosts',
- *         }
- *     }
- * }
+ *             'common\widgets\LastPosts'
+ *         ]
+ *     ]
+ * ]
  *
  * Widget:
  * class LastPostsWidget extends Widget
@@ -23,9 +23,9 @@
  *     public function run()
  *     {
  *         $posts = Post::find()->published()->all();
- *         return $this->render('LastPosts/' . $this->tpl, array(
+ *         return $this->render('LastPosts/' . $this->tpl, [
  *             'posts' => $posts,
- *         ));
+ *         ]);
  *     }
  * }
  *
@@ -35,13 +35,13 @@
  * {
  *     public function behaviors()
  *     {
- *         return array(
- *             'InlineWidgetsBehavior'=>array(
+ *         return [
+ *             'InlineWidgetsBehavior'=> [
  *                 'class' => InlineWidgetsBehavior::className(),
  *                 'namespace' => 'common\components\widgets',
  *                 'widgets' => Yii::app()->params['runtimeWidgets'],
- *              ),
- *         );
+ *              ],
+ *         ];
  *     }
  * }
  *
@@ -65,7 +65,7 @@
  * ';
  * echo $this->context->decodeWidgets($text, $model);
  *
- * @authors: ElisDN <mail@elisdn.ru>, HowarD <vovchuck.bogdan@gmail.com>, demogorgorn <demogorgorn@gmail.com>
+ * @authors: ElisDN <mail@elisdn.ru>, outOFFspace <vovchuck.bogdan@gmail.com>, demogorgorn <demogorgorn@gmail.com>
  * @link http://www.elisdn.ru
  * @version 1.0
  */
@@ -95,7 +95,7 @@ class InlineWidgetsBehavior extends Behavior
     /**
      * @var array of allowed widgets
      */
-    public $widgets = array();
+    public $widgets = [];
 
     protected $_widgetToken;
 
@@ -202,7 +202,7 @@ class InlineWidgetsBehavior extends Behavior
     protected function _parseAttributes($attributesString)
     {
         $params = explode(';', $attributesString);
-        $attrs = array();
+        $attrs = [];
         foreach ($params as $param) {
             if ($param) {
                 list($attribute, $value) = explode('=', $param);
